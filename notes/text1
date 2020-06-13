@@ -1,0 +1,1182 @@
+[student@workstation ~]$ hostname
+workstation.lab.example.com
+[student@workstation ~]$ id
+uid=1000(student) gid=1000(student) groups=1000(student),10(wheel) context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+[student@workstation ~]$ id
+uid=1000(student) gid=1000(student) groups=1000(student),10(wheel) context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+[student@workstation ~]$ lab-configure
+
+This script configures the connection parameters to access the OpenShift cluster for your lab scripts
+
+ · Enter the Master API URL: https://api.ocp-ap3.prod.nextcle.com:6443/
+ · Enter the Cluster ID: ed1e5e34-e692-4809-a5d0-8f172fdbf51c
+ · Enter the Wildcard Domain: apps.ocp-ap3.prod.nextcle.com
+ · Enter the Nexus Host: nexus-common.apps.ocp-ap3.prod.nextcle.com
+ · Enter the Developer User name: prasanthaluru
+ · Enter the Developer User Password: fcb2c12a0721428ea8ca
+ · Enter the GitHub Account Name: prasanthaluru
+ · Enter the Quay.io Account Name: paluru
+
+You entered:
+ · Master API URL:			https://api.ocp-ap3.prod.nextcle.com:6443/
+ · Cluster ID:				ed1e5e34-e692-4809-a5d0-8f172fdbf51c
+ · Wildcard Domain:			apps.ocp-ap3.prod.nextcle.com
+ · Nexus Server Host:			nexus-common.apps.ocp-ap3.prod.nextcle.com
+ · Developer User Name:			prasanthaluru
+ · Developer User Password:		fcb2c12a0721428ea8ca
+ · GitHub Account Name:			prasanthaluru
+ · Quay.io Account Name:		paluru
+
+Verifying your Master API URL...
+
+Verifying your Nexus host...
+
+Verifying your OpenShift developer user credentials...
+
+Verifying your GitHub account name...
+
+Verifying your Quay.io account name...
+
+Verifying your cluster configuration...
+
+Saving your lab configuration file...
+
+Saving your Maven settings file...
+
+All fine, lab config saved. You can now proceed with your exercises.
+
+[student@workstation ~]$ git clone https://github.com/prasanthaluru/DO288-apps
+Cloning into 'DO288-apps'...
+remote: Enumerating objects: 865, done.
+remote: Total 865 (delta 0), reused 0 (delta 0), pack-reused 865
+Receiving objects: 100% (865/865), 463.34 KiB | 444.00 KiB/s, done.
+Resolving deltas: 100% (209/209), done.
+[student@workstation ~]$ ls
+Desktop  DO288-apps  Documents  Downloads  Music  Pictures  Public  Templates  Videos
+[student@workstation ~]$ pwd
+/home/student
+[student@workstation ~]$ cd DO288-apps/
+[student@workstation DO288-apps]$ ls
+app-config       hello-java         movies                php-scale    README.md        todo-frontend   ubi-sleep
+books            hello-world-nginx  nexus3                post-commit  s2i-scripts      todo-single
+build-app        html-helloworld    nodejs-helloworld     probes       simple-pipeline  trigger-builds
+container-build  java-serverhost    php-hello-dockerfile  quip         todo-api-micro   ubi-echo
+go-hello         micro-java         php-helloworld        quotes       todo-backend     ubi-info
+[student@workstation DO288-apps]$ git status
+# On branch master
+nothing to commit, working directory clean
+[student@workstation DO288-apps]$ head README.md 
+# DO288 Containerized Example Applications
+
+This repository contains a collection of sample containerized applications.  To complete the course you need to fork this repo into your personal Github account.[student@workstation DO288-apps]$ 
+[student@workstation DO288-apps]$ 
+[student@workstation DO288-apps]$ cat /usr/local/etc/ocp4.
+ocp4.config    ocp4.defaults  
+[student@workstation DO288-apps]$ cat /usr/local/etc/ocp4.
+ocp4.config    ocp4.defaults  
+[student@workstation DO288-apps]$ cat /usr/local/etc/ocp4.
+ocp4.config    ocp4.defaults  
+[student@workstation DO288-apps]$ cat /usr/local/etc/ocp4.config 
+RHT_OCP4_MASTER_API=https://api.ocp-ap3.prod.nextcle.com:6443/
+RHT_OCP4_WILDCARD_DOMAIN=apps.ocp-ap3.prod.nextcle.com
+RHT_OCP4_CLUSTER_ID=ed1e5e34-e692-4809-a5d0-8f172fdbf51c
+RHT_OCP4_NEXUS_SERVER=nexus-common.apps.ocp-ap3.prod.nextcle.com
+RHT_OCP4_DEV_USER=prasanthaluru
+RHT_OCP4_DEV_PASSWORD=fcb2c12a0721428ea8ca
+RHT_OCP4_GITHUB_USER=prasanthaluru
+RHT_OCP4_QUAY_USER=paluru
+[student@workstation DO288-apps]$ ls
+app-config       hello-java         movies                php-scale    README.md        todo-frontend   ubi-sleep
+books            hello-world-nginx  nexus3                post-commit  s2i-scripts      todo-single
+build-app        html-helloworld    nodejs-helloworld     probes       simple-pipeline  trigger-builds
+container-build  java-serverhost    php-hello-dockerfile  quip         todo-api-micro   ubi-echo
+go-hello         micro-java         php-helloworld        quotes       todo-backend     ubi-info
+[student@workstation DO288-apps]$ oc login -u prasanthaluru -pfcb2c12a0721428ea8ca https://api.ocp-ap3.prod.nextcle.com:6443/
+Login successful.
+
+You don't have any projects. You can try to create a new project, by running
+
+    oc new-project <projectname>
+
+[student@workstation DO288-apps]$ oc whoami
+prasanthaluru
+[student@workstation DO288-apps]$ echo $RHT_OCP4_DEV_USER
+
+[student@workstation DO288-apps]$ source /usr/local/etc/ocp4.config
+[student@workstation DO288-apps]$ echo $RHT_OCP4_DEV_USER
+prasanthaluru
+[student@workstation DO288-apps]$ oc getnodes
+Error: unknown command "getnodes" for "oc"
+Run 'oc --help' for usage.
+[student@workstation DO288-apps]$ oc get nodes
+NAME                                              STATUS   ROLES    AGE    VERSION
+ip-10-0-131-20.ap-southeast-1.compute.internal    Ready    master   213d   v1.14.6+d39ad8449
+ip-10-0-142-225.ap-southeast-1.compute.internal   Ready    worker   116d   v1.14.6+d39ad8449
+ip-10-0-142-83.ap-southeast-1.compute.internal    Ready    worker   88d    v1.14.6+d39ad8449
+ip-10-0-145-254.ap-southeast-1.compute.internal   Ready    master   213d   v1.14.6+d39ad8449
+ip-10-0-150-250.ap-southeast-1.compute.internal   Ready    worker   102d   v1.14.6+d39ad8449
+ip-10-0-155-140.ap-southeast-1.compute.internal   Ready    worker   110d   v1.14.6+d39ad8449
+ip-10-0-159-6.ap-southeast-1.compute.internal     Ready    worker   213d   v1.14.6+d39ad8449
+ip-10-0-162-168.ap-southeast-1.compute.internal   Ready    worker   110d   v1.14.6+d39ad8449
+ip-10-0-162-44.ap-southeast-1.compute.internal    Ready    worker   213d   v1.14.6+d39ad8449
+ip-10-0-166-211.ap-southeast-1.compute.internal   Ready    master   213d   v1.14.6+d39ad8449
+ip-10-0-172-38.ap-southeast-1.compute.internal    Ready    worker   92d    v1.14.6+d39ad8449
+ip-10-0-174-252.ap-southeast-1.compute.internal   Ready    worker   47d    v1.14.6+d39ad8449
+[student@workstation DO288-apps]$ oc whoami
+prasanthaluru
+[student@workstation DO288-apps]$ oc get pods -n openshift-image-registry
+NAME                                               READY   STATUS    RESTARTS   AGE
+cluster-image-registry-operator-6fc9bd9b4d-tvcsn   2/2     Running   0          39d
+image-registry-8578c46c78-s94wn                    1/1     Running   0          4d16h
+node-ca-29l5r                                      1/1     Running   1          101d
+node-ca-4s9kg                                      1/1     Running   1          101d
+node-ca-62vcd                                      1/1     Running   0          92d
+node-ca-bpvsf                                      1/1     Running   2          101d
+node-ca-d2n4l                                      1/1     Running   1          101d
+node-ca-f44x9                                      1/1     Running   1          101d
+node-ca-jk29f                                      1/1     Running   0          88d
+node-ca-lcxdt                                      1/1     Running   1          101d
+node-ca-lswq9                                      1/1     Running   1          101d
+node-ca-nc49z                                      1/1     Running   0          47d
+node-ca-qwkzp                                      1/1     Running   1          101d
+node-ca-sx6pf                                      1/1     Running   2          101d
+[student@workstation DO288-apps]$ oc get pods --all-namespaces
+Error from server (Forbidden): pods is forbidden: User "prasanthaluru" cannot list resource "pods" in API group "" at the cluster scope
+[student@workstation DO288-apps]$ oc get pods --all-namespaces -l app=router
+Error from server (Forbidden): pods is forbidden: User "prasanthaluru" cannot list resource "pods" in API group "" at the cluster scope
+[student@workstation DO288-apps]$ oc explain route
+KIND:     Route
+VERSION:  route.openshift.io/v1
+
+DESCRIPTION:
+     A route allows developers to expose services through an HTTP(S) aware load
+     balancing and proxy layer via a public DNS entry. The route may further
+     specify TLS options and a certificate, or specify a public CNAME that the
+     router should also accept for HTTP and HTTPS traffic. An administrator
+     typically configures their router to be visible outside the cluster
+     firewall, and may also add additional security, caching, or traffic
+     controls on the service content. Routers usually talk directly to the
+     service endpoints. Once a route is created, the `host` field may not be
+     changed. Generally, routers use the oldest route with a given host when
+     resolving conflicts. Routers are subject to additional customization and
+     may support additional controls via the annotations field. Because
+     administrators may configure multiple routers, the route status field is
+     used to return information to clients about the names and states of the
+     route under each router. If a client chooses a duplicate name, for
+     instance, the route status conditions are used to indicate the route cannot
+     be chosen.
+
+FIELDS:
+   apiVersion	<string>
+     APIVersion defines the versioned schema of this representation of an
+     object. Servers should convert recognized schemas to the latest internal
+     value, and may reject unrecognized values. More info:
+     https://git.k8s.io/community/contributors/devel/api-conventions.md#resources
+
+   kind	<string>
+     Kind is a string value representing the REST resource this object
+     represents. Servers may infer this from the endpoint the client submits
+     requests to. Cannot be updated. In CamelCase. More info:
+     https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds
+
+   metadata	<Object>
+     Standard object metadata.
+
+   spec	<Object> -required-
+     spec is the desired state of the route
+
+   status	<Object> -required-
+     status is the current state of the route
+
+[student@workstation DO288-apps]$ oc explain route.spec
+KIND:     Route
+VERSION:  route.openshift.io/v1
+
+RESOURCE: spec <Object>
+
+DESCRIPTION:
+     spec is the desired state of the route
+
+     RouteSpec describes the hostname or path the route exposes, any security
+     information, and one to four backends (services) the route points to.
+     Requests are distributed among the backends depending on the weights
+     assigned to each backend. When using roundrobin scheduling the portion of
+     requests that go to each backend is the backend weight divided by the sum
+     of all of the backend weights. When the backend has more than one endpoint
+     the requests that end up on the backend are roundrobin distributed among
+     the endpoints. Weights are between 0 and 256 with default 100. Weight 0
+     causes no requests to the backend. If all weights are zero the route will
+     be considered to have no backends and return a standard 503 response. The
+     `tls` field is optional and allows specific certificates or behavior for
+     the route. Routers typically configure a default certificate on a wildcard
+     domain to terminate routes without explicit certificates, but custom
+     hostnames usually must choose passthrough (send traffic directly to the
+     backend via the TLS Server-Name- Indication field) or provide a
+     certificate.
+
+FIELDS:
+   alternateBackends	<[]Object>
+     alternateBackends allows up to 3 additional backends to be assigned to the
+     route. Only the Service kind is allowed, and it will be defaulted to
+     Service. Use the weight field in RouteTargetReference object to specify
+     relative preference.
+
+   host	<string> -required-
+     host is an alias/DNS that points to the service. Optional. If not specified
+     a route name will typically be automatically chosen. Must follow DNS952
+     subdomain conventions.
+
+   path	<string>
+     path that the router watches for, to route traffic for to the service.
+     Optional
+
+   port	<Object>
+     If specified, the port to be used by the router. Most routers will use all
+     endpoints exposed by the service by default - set this value to instruct
+     routers which port to use.
+
+   subdomain	<string>
+     subdomain is a DNS subdomain that is requested within the ingress
+     controller's domain (as a subdomain). If host is set this field is ignored.
+     An ingress controller may choose to ignore this suggested name, in which
+     case the controller will report the assigned name in the status.ingress
+     array or refuse to admit the route. If this value is set and the server
+     does not support this field host will be populated automatically. Otherwise
+     host is left empty. The field may have multiple parts separated by a dot,
+     but not all ingress controllers may honor the request. This field may not
+     be changed after creation except by a user with the update
+     routes/custom-host permission. Example: subdomain `frontend` automatically
+     receives the router subdomain `apps.mycluster.com` to have a full hostname
+     `frontend.apps.mycluster.com`.
+
+   tls	<Object>
+     The tls field provides the ability to configure certificates and
+     termination for the route.
+
+   to	<Object> -required-
+     to is an object the route should use as the primary backend. Only the
+     Service kind is allowed, and it will be defaulted to Service. If the weight
+     field (0-256 default 100) is set to zero, no traffic will be sent to this
+     backend.
+
+   wildcardPolicy	<string>
+     Wildcard policy if any for the route. Currently only 'Subdomain' or 'None'
+     is allowed.
+
+[student@workstation DO288-apps]$ oc explain route.spec.port
+KIND:     Route
+VERSION:  route.openshift.io/v1
+
+RESOURCE: port <Object>
+
+DESCRIPTION:
+     If specified, the port to be used by the router. Most routers will use all
+     endpoints exposed by the service by default - set this value to instruct
+     routers which port to use.
+
+     RoutePort defines a port mapping from a router to an endpoint in the
+     service endpoints.
+
+FIELDS:
+   targetPort	<string> -required-
+     The target port on pods selected by the service this route points to. If
+     this is a string, it will be looked up as a named port in the target
+     endpoints port list. Required
+
+[student@workstation DO288-apps]$ oc explain route.spec.host
+KIND:     Route
+VERSION:  route.openshift.io/v1
+
+FIELD:    host <string>
+
+DESCRIPTION:
+     host is an alias/DNS that points to the service. Optional. If not specified
+     a route name will typically be automatically chosen. Must follow DNS952
+     subdomain conventions.
+[student@workstation DO288-apps]$ oc explain buildconfig
+KIND:     BuildConfig
+VERSION:  build.openshift.io/v1
+
+DESCRIPTION:
+     Build configurations define a build process for new container images. There
+     are three types of builds possible - a container image build using a
+     Dockerfile, a Source-to-Image build that uses a specially prepared base
+     image that accepts source code that it can make runnable, and a custom
+     build that can run // arbitrary container images as a base and accept the
+     build parameters. Builds run on the cluster and on completion are pushed to
+     the container image registry specified in the "output" section. A build can
+     be triggered via a webhook, when the base image changes, or when a user
+     manually requests a new build be // created. Each build created by a build
+     configuration is numbered and refers back to its parent configuration.
+     Multiple builds can be triggered at once. Builds that do not have "output"
+     set can be used to test code or run a verification build.
+
+FIELDS:
+   apiVersion	<string>
+     APIVersion defines the versioned schema of this representation of an
+     object. Servers should convert recognized schemas to the latest internal
+     value, and may reject unrecognized values. More info:
+     https://git.k8s.io/community/contributors/devel/api-conventions.md#resources
+
+   kind	<string>
+     Kind is a string value representing the REST resource this object
+     represents. Servers may infer this from the endpoint the client submits
+     requests to. Cannot be updated. In CamelCase. More info:
+     https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds
+
+   metadata	<Object>
+     metadata for BuildConfig.
+
+   spec	<Object> -required-
+     spec holds all the input necessary to produce a new build, and the
+     conditions when to trigger them.
+
+   status	<Object> -required-
+     status holds any relevant information about a build config
+
+[student@workstation DO288-apps]$  ls
+app-config       hello-java         movies                php-scale    README.md        todo-frontend   ubi-sleep
+books            hello-world-nginx  nexus3                post-commit  s2i-scripts      todo-single
+build-app        html-helloworld    nodejs-helloworld     probes       simple-pipeline  trigger-builds
+container-build  java-serverhost    php-hello-dockerfile  quip         todo-api-micro   ubi-echo
+go-hello         micro-java         php-helloworld        quotes       todo-backend     ubi-info
+[student@workstation DO288-apps]$ oc project
+No project has been set. Pass a project name to make that the default.
+[student@workstation DO288-apps]$ soc projects
+bash: soc: command not found...
+[student@workstation DO288-apps]$ oc projects
+You are not a member of any projects. You can request a project to be created with the 'new-project' command.
+[student@workstation DO288-apps]$ oc new-project first
+Error from server (AlreadyExists): project.project.openshift.io "first" already exists
+[student@workstation DO288-apps]$ oc projects
+You are not a member of any projects. You can request a project to be created with the 'new-project' command.
+[student@workstation DO288-apps]$ oc whoami
+prasanthaluru
+[student@workstation DO288-apps]$ oc new-project firstAP
+The ProjectRequest "firstAP" is invalid: metadata.name: Invalid value: "firstAP": a DNS-1123 label must consist of lower case alphanumeric characters or '-', and must start and end with an alphanumeric character (e.g. 'my-name',  or '123-abc', regex used for validation is '[a-z0-9]([-a-z0-9]*[a-z0-9])?')
+[student@workstation DO288-apps]$ oc new-project first-pa
+Now using project "first-pa" on server "https://api.ocp-ap3.prod.nextcle.com:6443".
+
+You can add applications to this project with the 'new-app' command. For example, try:
+
+    oc new-app django-psql-example
+
+to build a new example application in Python. Or use kubectl to deploy a simple Kubernetes application:
+
+    kubectl create deployment hello-node --image=gcr.io/hello-minikube-zero-install/hello-node
+
+[student@workstation DO288-apps]$ oc prokects
+Error: unknown command "prokects" for "oc"
+
+Did you mean this?
+	project
+	projects
+
+Run 'oc --help' for usage.
+[student@workstation DO288-apps]$ oc projects
+You have one project on this server: "first-pa".
+
+Using project "first-pa" on server "https://api.ocp-ap3.prod.nextcle.com:6443".
+[student@workstation DO288-apps]$ oc new-app --name myphp https://github.com/prasanthaluru/DO288-apps#master --context-dir=php-helloworld
+--> Found image b97f3e7 (7 months old) in image stream "openshift/php" under tag "7.2" for "php"
+
+    Apache 2.4 with PHP 7.2 
+    ----------------------- 
+    PHP 7.2 available as container is a base platform for building and running various PHP 7.2 applications and frameworks. PHP is an HTML-embedded scripting language. PHP attempts to make it easy for developers to write dynamically generated web pages. PHP also offers built-in database integration for several commercial and non-commercial database management systems, so writing a database-enabled webpage with PHP is fairly simple. The most common use of PHP coding is probably as a replacement for CGI scripts.
+
+    Tags: builder, php, php72, rh-php72
+
+    * The source repository appears to match: php
+    * A source build using source code from https://github.com/prasanthaluru/DO288-apps#master will be created
+      * The resulting image will be pushed to image stream tag "myphp:latest"
+      * Use 'oc start-build' to trigger a new build
+    * This image will be deployed in deployment config "myphp"
+    * Ports 8080/tcp, 8443/tcp will be load balanced by service "myphp"
+      * Other containers can access this service through the hostname "myphp"
+
+--> Creating resources ...
+    imagestream.image.openshift.io "myphp" created
+    buildconfig.build.openshift.io "myphp" created
+    deploymentconfig.apps.openshift.io "myphp" created
+    service "myphp" created
+--> Success
+    Build scheduled, use 'oc logs -f bc/myphp' to track its progress.
+    Application is not exposed. You can expose services to the outside world by executing one or more of the commands below:
+     'oc expose svc/myphp' 
+    Run 'oc status' to view your app.
+[student@workstation DO288-apps]$ oc status
+In project first-pa on server https://api.ocp-ap3.prod.nextcle.com:6443
+
+svc/myphp - 172.30.204.46 ports 8080, 8443
+  dc/myphp deploys istag/myphp:latest <-
+    bc/myphp source builds https://github.com/prasanthaluru/DO288-apps#master on openshift/php:7.2 
+      build #1 pending for 8 seconds
+    deployment #1 waiting on image or update
+
+
+2 infos identified, use 'oc status --suggest' to see details.
+[student@workstation DO288-apps]$ oc bc
+Error: unknown command "bc" for "oc"
+
+Did you mean this?
+	cp
+	ex
+
+Run 'oc --help' for usage.
+[student@workstation DO288-apps]$ oc describe
+error: You must specify the type of resource to describe. Use "oc api-resources" for a complete list of supported resources.
+[student@workstation DO288-apps]$ oc describe bc myphp 
+Name:		myphp
+Namespace:	first-pa
+Created:	About a minute ago
+Labels:		app=myphp
+Annotations:	openshift.io/generated-by=OpenShiftNewApp
+Latest Version:	1
+
+Strategy:	Source
+URL:		https://github.com/prasanthaluru/DO288-apps
+Ref:		master
+ContextDir:	php-helloworld
+From Image:	ImageStreamTag openshift/php:7.2
+Output to:	ImageStreamTag myphp:latest
+
+Build Run Policy:	Serial
+Triggered by:		Config, ImageChange
+Webhook Generic:
+	URL:		https://api.ocp-ap3.prod.nextcle.com:6443/apis/build.openshift.io/v1/namespaces/first-pa/buildconfigs/myphp/webhooks/<secret>/generic
+	AllowEnv:	false
+Webhook GitHub:
+	URL:	https://api.ocp-ap3.prod.nextcle.com:6443/apis/build.openshift.io/v1/namespaces/first-pa/buildconfigs/myphp/webhooks/<secret>/github
+Builds History Limit:
+	Successful:	5
+	Failed:		5
+
+Build		Status		Duration		Creation Time
+myphp-1 	running 	running for 1m28s 	2020-06-09 04:10:34 +0000 UTC
+
+Events:	<none>
+[student@workstation DO288-apps]$ oc describe bc myphp 
+Name:		myphp
+Namespace:	first-pa
+Created:	3 minutes ago
+Labels:		app=myphp
+Annotations:	openshift.io/generated-by=OpenShiftNewApp
+Latest Version:	1
+
+Strategy:	Source
+URL:		https://github.com/prasanthaluru/DO288-apps
+Ref:		master
+ContextDir:	php-helloworld
+From Image:	ImageStreamTag openshift/php:7.2
+Output to:	ImageStreamTag myphp:latest
+
+Build Run Policy:	Serial
+Triggered by:		Config, ImageChange
+Webhook Generic:
+	URL:		https://api.ocp-ap3.prod.nextcle.com:6443/apis/build.openshift.io/v1/namespaces/first-pa/buildconfigs/myphp/webhooks/<secret>/generic
+	AllowEnv:	false
+Webhook GitHub:
+	URL:	https://api.ocp-ap3.prod.nextcle.com:6443/apis/build.openshift.io/v1/namespaces/first-pa/buildconfigs/myphp/webhooks/<secret>/github
+Builds History Limit:
+	Successful:	5
+	Failed:		5
+
+Build		Status		Duration	Creation Time
+myphp-1 	complete 	2m22s 		2020-06-09 04:10:34 +0000 UTC
+
+Events:	<none>
+[student@workstation DO288-apps]$ oc images
+Error: unknown command "images" for "oc"
+
+Did you mean this?
+	image
+
+Run 'oc --help' for usage.
+[student@workstation DO288-apps]$ oc image
+Manage images on OpenShift
+
+ These commands help you manage images on OpenShift.
+
+Usage:
+  oc image COMMAND [flags]
+
+Advanced commands:
+  append      Add layers to images and push them to a registry
+  info        Display information about an image
+  extract     Copy files from an image to the filesystem
+  mirror      Mirror images from one repository to another
+
+Use "oc image <command> --help" for more information about a given command.
+Use "oc options" for a list of global command-line options (applies to all commands).
+[student@workstation DO288-apps]$ oc get builds
+NAME      TYPE     FROM          STATUS     STARTED         DURATION
+myphp-1   Source   Git@d3b6fa2   Complete   3 minutes ago   2m22s
+[student@workstation DO288-apps]$ oc describe dc/myphp
+Name:		myphp
+Namespace:	first-pa
+Created:	4 minutes ago
+Labels:		app=myphp
+Annotations:	openshift.io/generated-by=OpenShiftNewApp
+Latest Version:	1
+Selector:	app=myphp,deploymentconfig=myphp
+Replicas:	1
+Triggers:	Config, Image(myphp@latest, auto=true)
+Strategy:	Rolling
+Template:
+Pod Template:
+  Labels:	app=myphp
+		deploymentconfig=myphp
+  Annotations:	openshift.io/generated-by: OpenShiftNewApp
+  Containers:
+   myphp:
+    Image:		image-registry.openshift-image-registry.svc:5000/first-pa/myphp@sha256:28ae16f63cae6ba75ddd013cf2787a5eac7997eb2e6ae6c1707a1055e09e5e7d
+    Ports:		8443/TCP, 8080/TCP
+    Host Ports:		0/TCP, 0/TCP
+    Environment:	<none>
+    Mounts:		<none>
+  Volumes:		<none>
+
+Deployment #1 (latest):
+	Name:		myphp-1
+	Created:	about a minute ago
+	Status:		Complete
+	Replicas:	1 current / 1 desired
+	Selector:	app=myphp,deployment=myphp-1,deploymentconfig=myphp
+	Labels:		app=myphp,openshift.io/deployment-config.name=myphp
+	Pods Status:	1 Running / 0 Waiting / 0 Succeeded / 0 Failed
+
+Events:
+  Type		Reason			Age	From				Message
+  ----		------			----	----				-------
+  Normal	DeploymentCreated	101s	deploymentconfig-controller	Created new replication controller "myphp-1" for version 1
+[student@workstation DO288-apps]$ oc get pods
+NAME             READY   STATUS      RESTARTS   AGE
+myphp-1-build    0/1     Completed   0          6m44s
+myphp-1-deploy   0/1     Completed   0          4m22s
+myphp-1-pnc2z    1/1     Running     0          4m12s
+[student@workstation DO288-apps]$ oc get builds
+NAME      TYPE     FROM          STATUS     STARTED         DURATION
+myphp-1   Source   Git@d3b6fa2   Complete   7 minutes ago   2m22s
+[student@workstation DO288-apps]$ oc describe dc/myphp
+Name:		myphp
+Namespace:	first-pa
+Created:	7 minutes ago
+Labels:		app=myphp
+Annotations:	openshift.io/generated-by=OpenShiftNewApp
+Latest Version:	1
+Selector:	app=myphp,deploymentconfig=myphp
+Replicas:	1
+Triggers:	Config, Image(myphp@latest, auto=true)
+Strategy:	Rolling
+Template:
+Pod Template:
+  Labels:	app=myphp
+		deploymentconfig=myphp
+  Annotations:	openshift.io/generated-by: OpenShiftNewApp
+  Containers:
+   myphp:
+    Image:		image-registry.openshift-image-registry.svc:5000/first-pa/myphp@sha256:28ae16f63cae6ba75ddd013cf2787a5eac7997eb2e6ae6c1707a1055e09e5e7d
+    Ports:		8443/TCP, 8080/TCP
+    Host Ports:		0/TCP, 0/TCP
+    Environment:	<none>
+    Mounts:		<none>
+  Volumes:		<none>
+
+Deployment #1 (latest):
+	Name:		myphp-1
+	Created:	4 minutes ago
+	Status:		Complete
+	Replicas:	1 current / 1 desired
+	Selector:	app=myphp,deployment=myphp-1,deploymentconfig=myphp
+	Labels:		app=myphp,openshift.io/deployment-config.name=myphp
+	Pods Status:	1 Running / 0 Waiting / 0 Succeeded / 0 Failed
+
+Events:
+  Type		Reason			Age	From				Message
+  ----		------			----	----				-------
+  Normal	DeploymentCreated	4m43s	deploymentconfig-controller	Created new replication controller "myphp-1" for version 1
+[student@workstation DO288-apps]$ oc desvribe is -n openshift | less -S
+[student@workstation DO288-apps]$ 
+[student@workstation DO288-apps]$ oc describe is -n openshift | less -S
+[student@workstation DO288-apps]$ 
+[student@workstation DO288-apps]$ 
+[student@workstation DO288-apps]$ 
+[student@workstation DO288-apps]$ #lab docker-build start
+[student@workstation DO288-apps]$ cd ..
+[student@workstation ~]$ ls
+Desktop  DO288-apps  Documents  Downloads  Music  Pictures  Public  Templates  Videos
+[student@workstation ~]$ lab docker-build start
+
+Checking prerequisites for GE: Deploying an Application to an OpenShift Cluster
+
+ Checking local clone of the applications repository:
+ · Folder '/home/student/DO288-apps' is a git repo.............  SUCCESS
+ · Git repo '/home/student/DO288-apps' has no pending changes..  SUCCESS
+ Verifying the OpenShift cluster is running:
+ · Log in on OpenShift.........................................  SUCCESS
+ · Check master node ip-10-0-131-20.ap-southeast-1.compute.inte
+   rnal is ready...............................................  SUCCESS
+ · Check master node ip-10-0-145-254.ap-southeast-1.compute.int
+   ernal is ready..............................................  SUCCESS
+ · Check master node ip-10-0-166-211.ap-southeast-1.compute.int
+   ernal is ready..............................................  SUCCESS
+ · Check the internal registry is up and running...............  SUCCESS
+ Checking required artifacts:
+ · Project 'ubi-echo' exists in student's GitHub fork..........  SUCCESS
+ Checking for conflicts with existing OpenShift projects:
+ · Project 'prasanthaluru-docker-build' is absent..............  SUCCESS
+
+Setting up the classroom for GE: Deploying an Application to an OpenShift Cluster
+
+ · Download exercise files.....................................  SUCCESS
+ · Download solution files.....................................  SUCCESS
+
+Overall start status...........................................  SUCCESS
+
+[student@workstation ~]$ cd DO288
+DO288/      DO288-apps/ 
+[student@workstation ~]$ cd DO288
+DO288/      DO288-apps/ 
+[student@workstation ~]$ cd DO288
+DO288/      DO288-apps/ 
+[student@workstation ~]$ cd DO288-apps/
+[student@workstation DO288-apps]$ git stauts
+git: 'stauts' is not a git command. See 'git --help'.
+
+Did you mean this?
+	status
+[student@workstation DO288-apps]$ git status
+# On branch master
+nothing to commit, working directory clean
+[student@workstation DO288-apps]$ git checkout master
+Already on 'master'
+[student@workstation DO288-apps]$ git checkout -b docker-build
+Switched to a new branch 'docker-build'
+[student@workstation DO288-apps]$ git push -u origin docker-build
+Username for 'https://github.com': prasanthaluru
+Password for 'https://prasanthaluru@github.com': 
+Branch docker-build set up to track remote branch docker-build from origin.
+Everything up-to-date
+[student@workstation DO288-apps]$ cat ubi-echo/Dockerfile 
+FROM registry.access.redhat.com/ubi8/ubi:8.0
+USER 1001
+CMD bash -c "while true; do echo test; sleep 5; done"
+[student@workstation DO288-apps]$ 
+[student@workstation DO288-apps]$ source /usr/local/etc/ocp4.config
+[student@workstation DO288-apps]$ cat /usr/local/etc/ocp4.config
+RHT_OCP4_MASTER_API=https://api.ocp-ap3.prod.nextcle.com:6443/
+RHT_OCP4_WILDCARD_DOMAIN=apps.ocp-ap3.prod.nextcle.com
+RHT_OCP4_CLUSTER_ID=ed1e5e34-e692-4809-a5d0-8f172fdbf51c
+RHT_OCP4_NEXUS_SERVER=nexus-common.apps.ocp-ap3.prod.nextcle.com
+RHT_OCP4_DEV_USER=prasanthaluru
+RHT_OCP4_DEV_PASSWORD=fcb2c12a0721428ea8ca
+RHT_OCP4_GITHUB_USER=prasanthaluru
+RHT_OCP4_QUAY_USER=paluru
+[student@workstation DO288-apps]$ 
+[student@workstation DO288-apps]$ 
+[student@workstation DO288-apps]$ oc login -u $RHT_OCP4_DEV_USER -p $RHT_OCP4_DEV_PASSWORD $RHT_OCP4_MASTER_API
+Login successful.
+
+You have one project on this server: "first-pa"
+
+Using project "first-pa".
+[student@workstation DO288-apps]$ 
+[student@workstation DO288-apps]$ ^C
+[student@workstation DO288-apps]$ oc new-project ${RHT_OCP4_DEV_USER}-docker-build
+Now using project "prasanthaluru-docker-build" on server "https://api.ocp-ap3.prod.nextcle.com:6443".
+
+You can add applications to this project with the 'new-app' command. For example, try:
+
+    oc new-app django-psql-example
+
+to build a new example application in Python. Or use kubectl to deploy a simple Kubernetes application:
+
+    kubectl create deployment hello-node --image=gcr.io/hello-minikube-zero-install/hello-node
+
+[student@workstation DO288-apps]$ docker projects
+docker: 'projects' is not a docker command.
+See 'docker --help'
+[student@workstation DO288-apps]$ oc projects
+You have access to the following projects and can switch between them with 'oc project <projectname>':
+
+    first-pa
+  * prasanthaluru-docker-build
+
+Using project "prasanthaluru-docker-build" on server "https://api.ocp-ap3.prod.nextcle.com:6443".
+[student@workstation DO288-apps]$ oc new-app --name echo https://github.com/${RHT_OCP4_GITHUB_USER}/DO288-apps#docker-build --context-dir ubi-echo
+--> Found Docker image 11f9dba (8 months old) from registry.access.redhat.com for "registry.access.redhat.com/ubi8/ubi:8.0"
+
+    Red Hat Universal Base Image 8 
+    ------------------------------ 
+    The Universal Base Image is designed and engineered to be the base layer for all of your containerized applications, middleware and utilities. This base image is freely redistributable, but Red Hat only supports Red Hat technologies through subscriptions for Red Hat products. This image is maintained by Red Hat and updated regularly.
+
+    Tags: base rhel8
+
+    * An image stream tag will be created as "ubi:8.0" that will track the source image
+    * A Docker build using source code from https://github.com/prasanthaluru/DO288-apps#docker-build will be created
+      * The resulting image will be pushed to image stream tag "echo:latest"
+      * Every time "ubi:8.0" changes a new build will be triggered
+    * This image will be deployed in deployment config "echo"
+    * The image does not expose any ports - if you want to load balance or send traffic to this component
+      you will need to create a service with 'oc expose dc/echo --port=[port]' later
+    * WARNING: Image "registry.access.redhat.com/ubi8/ubi:8.0" runs as the 'root' user which may not be permitted by your cluster administrator
+
+--> Creating resources ...
+    imagestream.image.openshift.io "ubi" created
+    imagestream.image.openshift.io "echo" created
+    buildconfig.build.openshift.io "echo" created
+    deploymentconfig.apps.openshift.io "echo" created
+--> Success
+    Build scheduled, use 'oc logs -f bc/echo' to track its progress.
+    Run 'oc status' to view your app.
+[student@workstation DO288-apps]$ oc logs -f bc/echo
+Cloning "https://github.com/prasanthaluru/DO288-apps" ...
+	Commit:	d3b6fa27b03665eae8915137a621fbb516be84f4 (Merge pull request #16 from joetatrh/fix-lab-ch10-s03)
+	Author:	Marek Czernek <mczernek@redhat.com>
+	Date:	Tue Feb 18 14:21:22 2020 +0100
+Replaced Dockerfile FROM image registry.access.redhat.com/ubi8/ubi:8.0
+Caching blobs under "/var/cache/blobs".
+
+Pulling image registry.access.redhat.com/ubi8/ubi@sha256:8275e2ad7f458e329bdc8c0e7543cff1729998fe515a281d49638246de8e39ee ...
+Getting image source signatures
+Copying blob sha256:641d7cc5cbc48a13c68806cf25d5bcf76ea2157c3181e1db4f5d0edae34954ac
+Copying blob sha256:c65691897a4d140d441e2024ce086de996b1c4620832b90c973db81329577274
+Copying config sha256:11f9dba4d1bc7bbead64adb8fd73ea92dca5fac88a9b5c2c9796abcf2e97846d
+Writing manifest to image destination
+Storing signatures
+STEP 1: FROM registry.access.redhat.com/ubi8/ubi@sha256:8275e2ad7f458e329bdc8c0e7543cff1729998fe515a281d49638246de8e39ee
+STEP 2: USER 1001
+870e3c8ef0e7640b8b1d61e8953ff7d14d35f4885636b58fc7d2a035d3f66d7f
+STEP 3: CMD bash -c "while true; do echo test; sleep 5; done"
+bac11d8d3a786c325fd461e3a6a9ef3387344911fe014b30a2ad12a26ae527cd
+STEP 4: ENV "OPENSHIFT_BUILD_NAME"="echo-1" "OPENSHIFT_BUILD_NAMESPACE"="prasanthaluru-docker-build" "OPENSHIFT_BUILD_SOURCE"="https://github.com/prasanthaluru/DO288-apps" "OPENSHIFT_BUILD_REFERENCE"="docker-build" "OPENSHIFT_BUILD_COMMIT"="d3b6fa27b03665eae8915137a621fbb516be84f4"
+857486dc78b6a9dae0c0e23bd4e2452204cd2f41af26865e529023502c1de6fe
+STEP 5: LABEL "io.openshift.build.commit.author"="Marek Czernek \u003cmczernek@redhat.com\u003e" "io.openshift.build.commit.date"="Tue Feb 18 14:21:22 2020 +0100" "io.openshift.build.commit.id"="d3b6fa27b03665eae8915137a621fbb516be84f4" "io.openshift.build.commit.message"="Merge pull request #16 from joetatrh/fix-lab-ch10-s03" "io.openshift.build.commit.ref"="docker-build" "io.openshift.build.name"="echo-1" "io.openshift.build.namespace"="prasanthaluru-docker-build" "io.openshift.build.source-context-dir"="ubi-echo" "io.openshift.build.source-location"="https://github.com/prasanthaluru/DO288-apps"
+STEP 6: COMMIT temp.builder.openshift.io/prasanthaluru-docker-build/echo-1:3d3c5a5a
+1ca266feccc39ca2e2e98ce120b7e672ebea4db1cb2d59b15f3c7732f910373b
+
+Pushing image image-registry.openshift-image-registry.svc:5000/prasanthaluru-docker-build/echo:latest ...
+Getting image source signatures
+Copying blob sha256:641d7cc5cbc48a13c68806cf25d5bcf76ea2157c3181e1db4f5d0edae34954ac
+Copying blob sha256:c65691897a4d140d441e2024ce086de996b1c4620832b90c973db81329577274
+Copying config sha256:1ca266feccc39ca2e2e98ce120b7e672ebea4db1cb2d59b15f3c7732f910373b
+Writing manifest to image destination
+Storing signatures
+Successfully pushed image-registry.openshift-image-registry.svc:5000/prasanthaluru-docker-build/echo@sha256:f64478180e200e3cd7eb1237db974d7177826b061ed82b0df257656ebfa9caee
+Push successful
+[student@workstation DO288-apps]$ cat ubi-echo/Dockerfile 
+FROM registry.access.redhat.com/ubi8/ubi:8.0
+USER 1001
+CMD bash -c "while true; do echo test; sleep 5; done"
+[student@workstation DO288-apps]$ oc status
+In project prasanthaluru-docker-build on server https://api.ocp-ap3.prod.nextcle.com:6443
+
+dc/echo deploys istag/echo:latest <-
+  bc/echo docker builds https://github.com/prasanthaluru/DO288-apps#docker-build on istag/ubi:8.0 
+  deployment #1 deployed 5 minutes ago - 1 pod
+
+
+3 infos identified, use 'oc status --suggest' to see details.
+[student@workstation DO288-apps]$ oc get pod
+NAME            READY   STATUS      RESTARTS   AGE
+echo-1-build    0/1     Completed   0          6m52s
+echo-1-deploy   0/1     Completed   0          5m40s
+echo-1-mwpwv    1/1     Running     0          5m31s
+[student@workstation DO288-apps]$ oc logs echo-1-mwpwv
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+[student@workstation DO288-apps]$ oc describe bc echo
+Name:		echo
+Namespace:	prasanthaluru-docker-build
+Created:	8 minutes ago
+Labels:		app=echo
+Annotations:	openshift.io/generated-by=OpenShiftNewApp
+Latest Version:	1
+
+Strategy:	Docker
+URL:		https://github.com/prasanthaluru/DO288-apps
+Ref:		docker-build
+ContextDir:	ubi-echo
+From Image:	ImageStreamTag ubi:8.0
+Output to:	ImageStreamTag echo:latest
+
+Build Run Policy:	Serial
+Triggered by:		Config, ImageChange
+Webhook GitHub:
+	URL:	https://api.ocp-ap3.prod.nextcle.com:6443/apis/build.openshift.io/v1/namespaces/prasanthaluru-docker-build/buildconfigs/echo/webhooks/<secret>/github
+Webhook Generic:
+	URL:		https://api.ocp-ap3.prod.nextcle.com:6443/apis/build.openshift.io/v1/namespaces/prasanthaluru-docker-build/buildconfigs/echo/webhooks/<secret>/generic
+	AllowEnv:	false
+Builds History Limit:
+	Successful:	5
+	Failed:		5
+
+Build	Status		Duration	Creation Time
+echo-1 	complete 	1m12s 		2020-06-09 04:51:08 +0000 UTC
+
+Events:
+  Type		Reason				Age			From			Message
+  ----		------				----			----			-------
+  Warning	BuildConfigInstantiateFailed	8m17s (x9 over 8m18s)	buildconfig-controller	error instantiating Build from BuildConfig prasanthaluru-docker-build/echo (0): Error resolving ImageStreamTag ubi:8.0 in namespace prasanthaluru-docker-build: unable to find latest tagged image
+[student@workstation DO288-apps]$ oc describe is echo
+Name:			echo
+Namespace:		prasanthaluru-docker-build
+Created:		9 minutes ago
+Labels:			app=echo
+Annotations:		openshift.io/generated-by=OpenShiftNewApp
+Image Repository:	default-route-openshift-image-registry.apps.ocp-ap3.prod.nextcle.com/prasanthaluru-docker-build/echo
+Image Lookup:		local=false
+Unique Images:		1
+Tags:			1
+
+latest
+  no spec tag
+
+  * image-registry.openshift-image-registry.svc:5000/prasanthaluru-docker-build/echo@sha256:f64478180e200e3cd7eb1237db974d7177826b061ed82b0df257656ebfa9caee
+      8 minutes ago
+[student@workstation DO288-apps]$ oc describe dc echo
+Name:		echo
+Namespace:	prasanthaluru-docker-build
+Created:	10 minutes ago
+Labels:		app=echo
+Annotations:	openshift.io/generated-by=OpenShiftNewApp
+Latest Version:	1
+Selector:	app=echo,deploymentconfig=echo
+Replicas:	1
+Triggers:	Config, Image(echo@latest, auto=true)
+Strategy:	Rolling
+Template:
+Pod Template:
+  Labels:	app=echo
+		deploymentconfig=echo
+  Annotations:	openshift.io/generated-by: OpenShiftNewApp
+  Containers:
+   echo:
+    Image:		image-registry.openshift-image-registry.svc:5000/prasanthaluru-docker-build/echo@sha256:f64478180e200e3cd7eb1237db974d7177826b061ed82b0df257656ebfa9caee
+    Port:		<none>
+    Host Port:		<none>
+    Environment:	<none>
+    Mounts:		<none>
+  Volumes:		<none>
+
+Deployment #1 (latest):
+	Name:		echo-1
+	Created:	9 minutes ago
+	Status:		Complete
+	Replicas:	1 current / 1 desired
+	Selector:	app=echo,deployment=echo-1,deploymentconfig=echo
+	Labels:		app=echo,openshift.io/deployment-config.name=echo
+	Pods Status:	1 Running / 0 Waiting / 0 Succeeded / 0 Failed
+
+Events:
+  Type		Reason			Age	From				Message
+  ----		------			----	----				-------
+  Normal	DeploymentCreated	9m10s	deploymentconfig-controller	Created new replication controller "echo-1" for version 1
+[student@workstation DO288-apps]$ nano ubi-echo/Dockerfile 
+[student@workstation DO288-apps]$ git commit -a ubi-echo/Dockerfile ^C
+[student@workstation DO288-apps]$ 
+[student@workstation DO288-apps]$ cd ubi-
+bash: cd: ubi-: No such file or directory
+[student@workstation DO288-apps]$ cd ubi-
+ubi-echo/  ubi-info/  ubi-sleep/ 
+[student@workstation DO288-apps]$ cd ubi-echo/
+[student@workstation ubi-echo]$ git commit -a m 'Add a counter'
+fatal: Paths with -a does not make sense.
+[student@workstation ubi-echo]$ git commit -a -m 'Add a counter'
+[docker-build 505bbca] Add a counter
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+[student@workstation ubi-echo]$ git push
+Counting objects: 7, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (4/4), 438 bytes | 0 bytes/s, done.
+Total 4 (delta 1), reused 0 (delta 0)
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+To https://github.com/prasanthaluru/DO288-apps
+   d3b6fa2..505bbca  docker-build -> docker-build
+[student@workstation ubi-echo]$ cd ~
+[student@workstation ~]$ oc start-build echo
+build.build.openshift.io/echo-2 started
+[student@workstation ~]$ oc logs -f bc/eho
+Error from server (NotFound): buildconfigs.build.openshift.io "eho" not found
+[student@workstation ~]$ oc logs -f bc/echo
+Cloning "https://github.com/prasanthaluru/DO288-apps" ...
+	Commit:	505bbcaff127d209478085242ff044375710f613 (Add a counter)
+	Author:	Student User <student@workstation.lab.example.com>
+	Date:	Tue Jun 9 05:05:44 2020 +0000
+Replaced Dockerfile FROM image registry.access.redhat.com/ubi8/ubi:8.0
+Caching blobs under "/var/cache/blobs".
+
+Pulling image registry.access.redhat.com/ubi8/ubi@sha256:8275e2ad7f458e329bdc8c0e7543cff1729998fe515a281d49638246de8e39ee ...
+Getting image source signatures
+Copying blob sha256:641d7cc5cbc48a13c68806cf25d5bcf76ea2157c3181e1db4f5d0edae34954ac
+Copying blob sha256:c65691897a4d140d441e2024ce086de996b1c4620832b90c973db81329577274
+Copying config sha256:11f9dba4d1bc7bbead64adb8fd73ea92dca5fac88a9b5c2c9796abcf2e97846d
+Writing manifest to image destination
+Storing signatures
+STEP 1: FROM registry.access.redhat.com/ubi8/ubi@sha256:8275e2ad7f458e329bdc8c0e7543cff1729998fe515a281d49638246de8e39ee
+STEP 2: USER 1001
+272d772af44e6d2185043e45a32a15f78e159817f349d347135e9188d90c04f1
+STEP 3: CMD bash -c "while true; do (( i++ )); echo test \$i; sleep 5; done"
+bdf02a8305b6bab59f4495b9af9bd96ce8e5c425b8e21f20575f1e6331e1ca2f
+STEP 4: ENV "OPENSHIFT_BUILD_NAME"="echo-2" "OPENSHIFT_BUILD_NAMESPACE"="prasanthaluru-docker-build" "OPENSHIFT_BUILD_SOURCE"="https://github.com/prasanthaluru/DO288-apps" "OPENSHIFT_BUILD_REFERENCE"="docker-build" "OPENSHIFT_BUILD_COMMIT"="505bbcaff127d209478085242ff044375710f613"
+e190f4c51cd7c87c5579c61010fa64cbc2b47187e42366a9a3f4419d9c338178
+STEP 5: LABEL "io.openshift.build.commit.author"="Student User \u003cstudent@workstation.lab.example.com\u003e" "io.openshift.build.commit.date"="Tue Jun 9 05:05:44 2020 +0000" "io.openshift.build.commit.id"="505bbcaff127d209478085242ff044375710f613" "io.openshift.build.commit.message"="Add a counter" "io.openshift.build.commit.ref"="docker-build" "io.openshift.build.name"="echo-2" "io.openshift.build.namespace"="prasanthaluru-docker-build" "io.openshift.build.source-context-dir"="ubi-echo" "io.openshift.build.source-location"="https://github.com/prasanthaluru/DO288-apps"
+STEP 6: COMMIT temp.builder.openshift.io/prasanthaluru-docker-build/echo-2:9994cffb
+0c7089428bf50bf9a060ee800727010396c5efa515200742abfbb009ab8da3dc
+
+Pushing image image-registry.openshift-image-registry.svc:5000/prasanthaluru-docker-build/echo:latest ...
+Getting image source signatures
+Copying blob sha256:641d7cc5cbc48a13c68806cf25d5bcf76ea2157c3181e1db4f5d0edae34954ac
+Copying blob sha256:c65691897a4d140d441e2024ce086de996b1c4620832b90c973db81329577274
+Copying config sha256:0c7089428bf50bf9a060ee800727010396c5efa515200742abfbb009ab8da3dc
+Writing manifest to image destination
+Storing signatures
+Successfully pushed image-registry.openshift-image-registry.svc:5000/prasanthaluru-docker-build/echo@sha256:3fedf8c711043257c47df044519cfd62b991ea3611be6045df7c2d68873855f2
+Push successful
+[student@workstation ~]$ oc logs -f bc/echo
+Cloning "https://github.com/prasanthaluru/DO288-apps" ...
+	Commit:	505bbcaff127d209478085242ff044375710f613 (Add a counter)
+	Author:	Student User <student@workstation.lab.example.com>
+	Date:	Tue Jun 9 05:05:44 2020 +0000
+Replaced Dockerfile FROM image registry.access.redhat.com/ubi8/ubi:8.0
+Caching blobs under "/var/cache/blobs".
+
+Pulling image registry.access.redhat.com/ubi8/ubi@sha256:8275e2ad7f458e329bdc8c0e7543cff1729998fe515a281d49638246de8e39ee ...
+Getting image source signatures
+Copying blob sha256:641d7cc5cbc48a13c68806cf25d5bcf76ea2157c3181e1db4f5d0edae34954ac
+Copying blob sha256:c65691897a4d140d441e2024ce086de996b1c4620832b90c973db81329577274
+Copying config sha256:11f9dba4d1bc7bbead64adb8fd73ea92dca5fac88a9b5c2c9796abcf2e97846d
+Writing manifest to image destination
+Storing signatures
+STEP 1: FROM registry.access.redhat.com/ubi8/ubi@sha256:8275e2ad7f458e329bdc8c0e7543cff1729998fe515a281d49638246de8e39ee
+STEP 2: USER 1001
+272d772af44e6d2185043e45a32a15f78e159817f349d347135e9188d90c04f1
+STEP 3: CMD bash -c "while true; do (( i++ )); echo test \$i; sleep 5; done"
+bdf02a8305b6bab59f4495b9af9bd96ce8e5c425b8e21f20575f1e6331e1ca2f
+STEP 4: ENV "OPENSHIFT_BUILD_NAME"="echo-2" "OPENSHIFT_BUILD_NAMESPACE"="prasanthaluru-docker-build" "OPENSHIFT_BUILD_SOURCE"="https://github.com/prasanthaluru/DO288-apps" "OPENSHIFT_BUILD_REFERENCE"="docker-build" "OPENSHIFT_BUILD_COMMIT"="505bbcaff127d209478085242ff044375710f613"
+e190f4c51cd7c87c5579c61010fa64cbc2b47187e42366a9a3f4419d9c338178
+STEP 5: LABEL "io.openshift.build.commit.author"="Student User \u003cstudent@workstation.lab.example.com\u003e" "io.openshift.build.commit.date"="Tue Jun 9 05:05:44 2020 +0000" "io.openshift.build.commit.id"="505bbcaff127d209478085242ff044375710f613" "io.openshift.build.commit.message"="Add a counter" "io.openshift.build.commit.ref"="docker-build" "io.openshift.build.name"="echo-2" "io.openshift.build.namespace"="prasanthaluru-docker-build" "io.openshift.build.source-context-dir"="ubi-echo" "io.openshift.build.source-location"="https://github.com/prasanthaluru/DO288-apps"
+STEP 6: COMMIT temp.builder.openshift.io/prasanthaluru-docker-build/echo-2:9994cffb
+0c7089428bf50bf9a060ee800727010396c5efa515200742abfbb009ab8da3dc
+
+Pushing image image-registry.openshift-image-registry.svc:5000/prasanthaluru-docker-build/echo:latest ...
+Getting image source signatures
+Copying blob sha256:641d7cc5cbc48a13c68806cf25d5bcf76ea2157c3181e1db4f5d0edae34954ac
+Copying blob sha256:c65691897a4d140d441e2024ce086de996b1c4620832b90c973db81329577274
+Copying config sha256:0c7089428bf50bf9a060ee800727010396c5efa515200742abfbb009ab8da3dc
+Writing manifest to image destination
+Storing signatures
+Successfully pushed image-registry.openshift-image-registry.svc:5000/prasanthaluru-docker-build/echo@sha256:3fedf8c711043257c47df044519cfd62b991ea3611be6045df7c2d68873855f2
+Push successful
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ oc status
+In project prasanthaluru-docker-build on server https://api.ocp-ap3.prod.nextcle.com:6443
+
+dc/echo deploys istag/echo:latest <-
+  bc/echo docker builds https://github.com/prasanthaluru/DO288-apps#docker-build on istag/ubi:8.0 
+  deployment #2 deployed 43 seconds ago - 1 pod
+  deployment #1 deployed 15 minutes ago
+
+
+4 infos identified, use 'oc status --suggest' to see details.
+[student@workstation ~]$ oc get pod
+NAME            READY   STATUS      RESTARTS   AGE
+echo-1-build    0/1     Completed   0          17m
+echo-1-deploy   0/1     Completed   0          16m
+echo-2-5djx2    1/1     Running     0          45s
+echo-2-build    0/1     Completed   0          2m3s
+echo-2-deploy   0/1     Completed   0          56s
+[student@workstation ~]$ oc logs echo-2-5djx2 | head -n 3
+test 1
+test 2
+test 3
+[student@workstation ~]$ oc describe is echo
+Name:			echo
+Namespace:		prasanthaluru-docker-build
+Created:		18 minutes ago
+Labels:			app=echo
+Annotations:		openshift.io/generated-by=OpenShiftNewApp
+Image Repository:	default-route-openshift-image-registry.apps.ocp-ap3.prod.nextcle.com/prasanthaluru-docker-build/echo
+Image Lookup:		local=false
+Unique Images:		2
+Tags:			1
+
+latest
+  no spec tag
+
+  * image-registry.openshift-image-registry.svc:5000/prasanthaluru-docker-build/echo@sha256:3fedf8c711043257c47df044519cfd62b991ea3611be6045df7c2d68873855f2
+      2 minutes ago
+    image-registry.openshift-image-registry.svc:5000/prasanthaluru-docker-build/echo@sha256:f64478180e200e3cd7eb1237db974d7177826b061ed82b0df257656ebfa9caee
+      17 minutes ago
+[student@workstation ~]$ oc delete all -l app=echo
+pod "echo-2-5djx2" deleted
+replicationcontroller "echo-1" deleted
+replicationcontroller "echo-2" deleted
+deploymentconfig.apps.openshift.io "echo" deleted
+buildconfig.build.openshift.io "echo" deleted
+build.build.openshift.io "echo-1" deleted
+imagestream.image.openshift.io "echo" deleted
+imagestream.image.openshift.io "ubi" deleted
+
+[student@workstation ~]$ 
+[student@workstation ~]$ oc get all
+No resources found.
+[student@workstation ~]$ oc projects
+You have access to the following projects and can switch between them with 'oc project <projectname>':
+
+    first-pa
+  * prasanthaluru-docker-build
+
+Using project "prasanthaluru-docker-build" on server "https://api.ocp-ap3.prod.nextcle.com:6443".
+[student@workstation ~]$ oc project first-pa 
+Now using project "first-pa" on server "https://api.ocp-ap3.prod.nextcle.com:6443".
+[student@workstation ~]$ oc get all
+NAME                 READY   STATUS      RESTARTS   AGE
+pod/myphp-1-build    0/1     Completed   0          60m
+pod/myphp-1-deploy   0/1     Completed   0          58m
+pod/myphp-1-pnc2z    1/1     Running     0          58m
+
+NAME                            DESIRED   CURRENT   READY   AGE
+replicationcontroller/myphp-1   1         1         1       58m
+
+NAME            TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)             AGE
+service/myphp   ClusterIP   172.30.204.46   <none>        8080/TCP,8443/TCP   60m
+
+NAME                                       REVISION   DESIRED   CURRENT   TRIGGERED BY
+deploymentconfig.apps.openshift.io/myphp   1          1         1         config,image(myphp:latest)
+
+NAME                                   TYPE     FROM         LATEST
+buildconfig.build.openshift.io/myphp   Source   Git@master   1
+
+NAME                               TYPE     FROM          STATUS     STARTED             DURATION
+build.build.openshift.io/myphp-1   Source   Git@d3b6fa2   Complete   About an hour ago   2m22s
+
+NAME                                   IMAGE REPOSITORY                                                                      TAGS     UPDATED
+imagestream.image.openshift.io/myphp   default-route-openshift-image-registry.apps.ocp-ap3.prod.nextcle.com/first-pa/myphp   latest   About an hour ago
+[student@workstation ~]$ oc delete all -l app=myphp
+pod "myphp-1-pnc2z" deleted
+replicationcontroller "myphp-1" deleted
+service "myphp" deleted
+deploymentconfig.apps.openshift.io "myphp" deleted
+buildconfig.build.openshift.io "myphp" deleted
+build.build.openshift.io "myphp-1" deleted
+imagestream.image.openshift.io "myphp" deleted
+[student@workstation ~]$ oc get all
+No resources found.
+[student@workstation ~]$ lab docker-build finish
+
+Completing GE: Deploying an Application to an OpenShift Cluster
+
+ · Log in on OpenShift.........................................  SUCCESS
+ · Remove exercise files.......................................  SUCCESS
+ · Remove solution files.......................................  SUCCESS
+ · Delete OpenShift project 'prasanthaluru-docker-build'.......  SUCCESS
+ · Wait for project 'prasanthaluru-docker-build' to be gone....  SUCCESS
+ · Git repo '/home/student/DO288-apps' has no pending changes..  SUCCESS
+
+Please use start if you wish to do the exercise again.
+
+[student@workstation ~]$ docker projects
+docker: 'projects' is not a docker command.
+See 'docker --help'
+[student@workstation ~]$ oc projects
+You have one project on this server: "first-pa".
+
+Using project "first-pa" on server "https://api.ocp-ap3.prod.nextcle.com:6443".
+[student@workstation ~]$ oc delete project first-pa
+project.project.openshift.io "first-pa" deleted
+
+
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ oc projects
+You are not a member of any projects. You can request a project to be created with the 'new-project' command.
+[student@workstation ~]$ oc new-project ${RHT_OCP4_DEV_USER}-docker-build
+Now using project "prasanthaluru-docker-build" on server "https://api.ocp-ap3.prod.nextcle.com:6443".
+
+You can add applications to this project with the 'new-app' command. For example, try:
+
+    oc new-app django-psql-example
+
+to build a new example application in Python. Or use kubectl to deploy a simple Kubernetes application:
+
+    kubectl create deployment hello-node --image=gcr.io/hello-minikube-zero-install/hello-node
+
+[student@workstation ~]$ 
+

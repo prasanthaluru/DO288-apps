@@ -1,0 +1,675 @@
+[student@workstation ~]$ ls ~/DO288/labs/external-registry/ubi-sleep/^C
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ source /usr/local/etc/ocp4.config
+[student@workstation ~]$ cat /usr/local/etc/ocp4.config
+RHT_OCP4_MASTER_API=https://api.ocp-ap3.prod.nextcle.com:6443/
+RHT_OCP4_WILDCARD_DOMAIN=apps.ocp-ap3.prod.nextcle.com
+RHT_OCP4_CLUSTER_ID=ed1e5e34-e692-4809-a5d0-8f172fdbf51c
+RHT_OCP4_NEXUS_SERVER=nexus-common.apps.ocp-ap3.prod.nextcle.com
+RHT_OCP4_DEV_USER=prasanthaluru
+RHT_OCP4_DEV_PASSWORD=fcb2c12a0721428ea8ca
+RHT_OCP4_GITHUB_USER=prasanthaluru
+RHT_OCP4_QUAY_USER=paluru
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ oc get sa
+Error from server (Forbidden): serviceaccounts is forbidden: User "prasanthaluru" cannot list resource "serviceaccounts" in API group "" in the namespace "prasanthaluru-app-config"
+[student@workstation ~]$ oc projects
+You are not a member of any projects. You can request a project to be created with the 'new-project' command.
+[student@workstation ~]$ oc new-project prasanthaluru-app-config
+Already on project "prasanthaluru-app-config" on server "https://api.ocp-ap3.prod.nextcle.com:6443".
+
+You can add applications to this project with the 'new-app' command. For example, try:
+
+    oc new-app django-psql-example
+
+to build a new example application in Python. Or use kubectl to deploy a simple Kubernetes application:
+
+    kubectl create deployment hello-node --image=gcr.io/hello-minikube-zero-install/hello-node
+
+[student@workstation ~]$ 
+[student@workstation ~]$ oc get sa
+NAME       SECRETS   AGE
+builder    2         22s
+default    2         22s
+deployer   2         22s
+[student@workstation ~]$ oc get describe sa
+error: the server doesn't have a resource type "describe"
+[student@workstation ~]$ oc get describe default
+error: the server doesn't have a resource type "describe"
+[student@workstation ~]$ oc  describe sa/default
+
+
+
+
+
+
+Name:                default
+Namespace:           prasanthaluru-app-config
+Labels:              <none>
+Annotations:         <none>
+Image pull secrets:  default-dockercfg-f45rx
+Mountable secrets:   default-token-k8zkc
+                     default-dockercfg-f45rx
+Tokens:              default-token-6msm7
+                     default-token-k8zkc
+Events:              <none>
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ lab expose-registry start
+
+Checking prerequisites for GE: Using the OpenShift Registry
+
+ Verifying the OpenShift cluster is running:
+ · Log in on OpenShift.........................................  SUCCESS
+ · Check master node ip-10-0-131-20.ap-southeast-1.compute.inte
+   rnal is ready...............................................  SUCCESS
+ · Check master node ip-10-0-145-254.ap-southeast-1.compute.int
+   ernal is ready..............................................  SUCCESS
+ · Check master node ip-10-0-166-211.ap-southeast-1.compute.int
+   ernal is ready..............................................  SUCCESS
+ · Check the internal registry is up and running...............  SUCCESS
+ Checking required artifacts:
+ · OCI container image 'ubi-info' is available.................  SUCCESS
+ Checking for conflicts with existing OpenShift projects:
+ · Project 'prasanthaluru-common' is absent....................  SUCCESS
+ Checking for conflicts with existing local containers:
+ · Container 'info' is absent..................................  SUCCESS
+
+Setting up the classroom for GE: Using the OpenShift Registry
+
+ · Download exercise files.....................................  SUCCESS
+ · Download solution files.....................................  SUCCESS
+ · Download OCI container image folder 'ubi-info'..............  SUCCESS
+
+Overall start status...........................................  SUCCESS
+
+[student@workstation ~]$ source /usr/local/etc/ocp4.config
+[student@workstation ~]$ oc whoami
+prasanthaluru
+[student@workstation ~]$ oc get route -n openshift-image-registry
+NAME            HOST/PORT                                                              PATH   SERVICES         PORT    TERMINATION   WILDCARD
+default-route   default-route-openshift-image-registry.apps.ocp-ap3.prod.nextcle.com          image-registry   <all>   reencrypt     None
+[student@workstation ~]$ INTERNAL_REGISTRY=$( oc get route default-route -n openshift-image-registry -o jsonpath='{.spec.host}' )
+[student@workstation ~]$ echo $INTERNAL_REGISTRY
+default-route-openshift-image-registry.apps.ocp-ap3.prod.nextcle.com
+[student@workstation ~]$ oc new-project prasanthaluru-common
+Now using project "prasanthaluru-common" on server "https://api.ocp-ap3.prod.nextcle.com:6443".
+
+You can add applications to this project with the 'new-app' command. For example, try:
+
+    oc new-app django-psql-example
+
+to build a new example application in Python. Or use kubectl to deploy a simple Kubernetes application:
+
+    kubectl create deployment hello-node --image=gcr.io/hello-minikube-zero-install/hello-node
+
+[student@workstation ~]$ TOKEN=$(oc whoami -t)
+[student@workstation ~]$ ls ~/DO288/labs/ex
+expose-registry/   external-registry/ 
+[student@workstation ~]$ ls ~/DO288/labs/ex
+expose-registry/   external-registry/ 
+[student@workstation ~]$ ls ~/DO288/labs/ex
+expose-registry/   external-registry/ 
+[student@workstation ~]$ ls ~/DO288/labs/expose-registry/ubi-info/
+blobs  index.json  oci-layout
+[student@workstation ~]$ #skopeo copy --dest-creds=prasanth.aluru:$TOKEN oci/home/student/
+[student@workstation ~]$ 
+[student@workstation ~]$ pwd
+/home/student
+[student@workstation ~]$ skopeo copy --dest-creds=prasanth.aluru:$TOKEN oci/home/student/DO288/labs/expose-registry/ubi-info docker://$INTERNAL_REGISTRY/prasanthaluru-common/ubi-info:1.0
+FATA[0000] Invalid source name oci/home/student/DO288/labs/expose-registry/ubi-info: Invalid image name "oci/home/student/DO288/labs/expose-registry/ubi-info", expected colon-separated transport:reference 
+[student@workstation ~]$ skopeo copy --dest-creds=prasanth.aluru:$TOKEN oci:/home/student/DO288/labs/expose-registry/ubi-info docker://$INTERNAL_REGISTRY/prasanthaluru-common/ubi-info:1.0
+Getting image source signatures
+Copying blob sha256:787f47dbeaac926cc8c927a48e8a84fc97e05fbd1c08a4c9c4ddcaddfd87e2f7
+ 67.66 MB / 67.66 MB [======================================================] 5s
+Copying blob sha256:6a5240d60dc4e1ade0d103badb2a897e8103ebf0ebe08350cd582bbc9671cc7a
+ 1.45 KB / 1.45 KB [========================================================] 2s
+Copying blob sha256:6286544f607cd74ef046d8f492f4a61f081992cececfebe0e43ab1b1531c2b28
+ 259 B / 259 B [============================================================] 2s
+Copying blob sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1
+ 32 B / 32 B [==============================================================] 2s
+Copying config sha256:35de0dda82a8572fe506aa54634f209464df5c05b5d9b955557db10bd86a4fc5
+ 2.33 KB / 2.33 KB [========================================================] 2s
+Writing manifest to image destination
+Copying config sha256:35de0dda82a8572fe506aa54634f209464df5c05b5d9b955557db10bd86a4fc5
+ 0 B / 2.33 KB [------------------------------------------------------------] 1s
+Writing manifest to image destination
+Storing signatures
+[student@workstation ~]$ oc get is
+NAME       IMAGE REPOSITORY                                                                                     TAGS   UPDATED
+ubi-info   default-route-openshift-image-registry.apps.ocp-ap3.prod.nextcle.com/prasanthaluru-common/ubi-info   1.0    8 seconds ago
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ sudo podman login -u prasanthaluru -p $TOKEN $INTERNAL_REGISTRY
+Login Succeeded!
+[student@workstation ~]$ sudo podman pull $INTERNAL_REGISTRY/prasanthaluru-common/ubi-info:1.0
+Trying to pull default-route-openshift-image-registry.apps.ocp-ap3.prod.nextcle.com/prasanthaluru-common/ubi-info:1.0...Getting image source signatures
+Skipping fetch of repeat blob sha256:787f47dbeaac926cc8c927a48e8a84fc97e05fbd1c08a4c9c4ddcaddfd87e2f7
+Skipping fetch of repeat blob sha256:6a5240d60dc4e1ade0d103badb2a897e8103ebf0ebe08350cd582bbc9671cc7a
+Copying blob sha256:6286544f607cd74ef046d8f492f4a61f081992cececfebe0e43ab1b1531c2b28
+ 259 B / 259 B [============================================================] 0s
+Skipping fetch of repeat blob sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1
+Copying config sha256:35de0dda82a8572fe506aa54634f209464df5c05b5d9b955557db10bd86a4fc5
+ 2.33 KB / 2.33 KB [========================================================] 0s
+Writing manifest to image destination
+Storing signatures
+35de0dda82a8572fe506aa54634f209464df5c05b5d9b955557db10bd86a4fc5
+[student@workstation ~]$ oc delete is ubi-info
+imagestream.image.openshift.io "ubi-info" deleted
+[student@workstation ~]$ oc delete project prasanthaluru-common
+project.project.openshift.io "prasanthaluru-common" deleted
+[student@workstation ~]$ sudo podman images
+REPOSITORY                                                                                           TAG   IMAGE ID       CREATED         SIZE
+default-route-openshift-image-registry.apps.ocp-ap3.prod.nextcle.com/prasanthaluru-common/ubi-info   1.0   35de0dda82a8   12 months ago   216MB
+quay.io/paluru/ubi-sleep                                                                             1.0   a77dcf3acd08   12 months ago   216MB
+[student@workstation ~]$ sudo podman rm info
+no container with name or ID info found: no such container
+unable to find container info: no container with name or ID info found: no such container
+[student@workstation ~]$ sudo podman rm ubi-info
+no container with name or ID ubi-info found: no such container
+unable to find container ubi-info: no container with name or ID ubi-info found: no such container
+[student@workstation ~]$ sudo podman images
+REPOSITORY                                                                                           TAG   IMAGE ID       CREATED         SIZE
+default-route-openshift-image-registry.apps.ocp-ap3.prod.nextcle.com/prasanthaluru-common/ubi-info   1.0   35de0dda82a8   12 months ago   216MB
+quay.io/paluru/ubi-sleep                                                                             1.0   a77dcf3acd08   12 months ago   216MB
+[student@workstation ~]$ sudo podman rm 35de0dda82a8
+no container with name or ID 35de0dda82a8 found: no such container
+unable to find container 35de0dda82a8: no container with name or ID 35de0dda82a8 found: no such container
+[student@workstation ~]$ sudo podman rmi -f $INTERNAL_REGISTRY/prasanthaluru-common/ubi-info:1.0
+35de0dda82a8572fe506aa54634f209464df5c05b5d9b955557db10bd86a4fc5
+[student@workstation ~]$ sudo podman images
+REPOSITORY                 TAG   IMAGE ID       CREATED         SIZE
+quay.io/paluru/ubi-sleep   1.0   a77dcf3acd08   12 months ago   216MB
+[student@workstation ~]$ lab expose-registry finish
+
+Completing GE: Using the OpenShift Registry
+
+ · Log in on OpenShift.........................................  SUCCESS
+ · Remove exercise files.......................................  SUCCESS
+ · Remove solution files.......................................  SUCCESS
+
+Please use start if you wish to do the exercise again.
+
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ lab image-stream start
+
+Checking prerequisites for GE: Creating an Image Stream
+
+ Verifying the OpenShift cluster is running:
+ · Log in on OpenShift.........................................  SUCCESS
+ · Check master node ip-10-0-131-20.ap-southeast-1.compute.inte
+   rnal is ready...............................................  SUCCESS
+ · Check master node ip-10-0-145-254.ap-southeast-1.compute.int
+   ernal is ready..............................................  SUCCESS
+ · Check master node ip-10-0-166-211.ap-southeast-1.compute.int
+   ernal is ready..............................................  SUCCESS
+ · Check the internal registry is up and running...............  SUCCESS
+ Checking required artifacts:
+ · Image 'redhattraining/hello-world-nginx' is available.......  SUCCESS
+ Checking for conflicts with existing OpenShift projects:
+ · Project 'prasanthaluru-image-stream' is absent..............  SUCCESS
+ · Project 'prasanthaluru-common' is absent....................  SUCCESS
+
+Overall start status...........................................  SUCCESS
+
+[student@workstation ~]$ ^C
+[student@workstation ~]$ 
+[student@workstation ~]$ ^C
+[student@workstation ~]$ ^C
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[student@workstation ~]$ 
+[student@workstation ~]$ ^C
+[student@workstation ~]$ ^C
+[student@workstation ~]$ ^C
+[student@workstation ~]$ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[student@workstation ~]$ s
+bash: s: command not found...
+[student@workstation ~]$ ls
+Desktop  DO288  DO288-apps  Documents  Downloads  Music  Pictures  Public  Templates  Videos
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ source /usr/local/etc/ocp4.config
+[student@workstation ~]$ oc whoami
+prasanthaluru
+[student@workstation ~]$ oc get istag
+No resources found.
+[student@workstation ~]$ oc import-image hello-world --confirm --from quay.io/redhattraining/hello-world-nginx
+imagestream.image.openshift.io/hello-world imported
+
+Name:			hello-world
+Namespace:		prasanthaluru-common
+Created:		Less than a second ago
+Labels:			<none>
+Annotations:		openshift.io/image.dockerRepositoryCheck=2020-06-10T07:27:44Z
+Image Repository:	image-registry.openshift-image-registry.svc:5000/prasanthaluru-common/hello-world
+Image Lookup:		local=false
+Unique Images:		1
+Tags:			1
+
+latest
+  tagged from quay.io/redhattraining/hello-world-nginx
+
+  * quay.io/redhattraining/hello-world-nginx@sha256:7f99ece5f39bf8d5d76a43cd9104a8d0a39f7135821b94bc1ebdc39cdc6dd63b
+      Less than a second ago
+
+Image Name:	hello-world:latest
+Docker Image:	quay.io/redhattraining/hello-world-nginx@sha256:7f99ece5f39bf8d5d76a43cd9104a8d0a39f7135821b94bc1ebdc39cdc6dd63b
+Name:		sha256:7f99ece5f39bf8d5d76a43cd9104a8d0a39f7135821b94bc1ebdc39cdc6dd63b
+Created:	Less than a second ago
+Annotations:	image.openshift.io/dockerLayersOrder=ascending
+Image Size:	88.1MB in 10 layers
+Layers:		70.95MB	sha256:787f47dbeaac926cc8c927a48e8a84fc97e05fbd1c08a4c9c4ddcaddfd87e2f7
+		1.483kB	sha256:6a5240d60dc4e1ade0d103badb2a897e8103ebf0ebe08350cd582bbc9671cc7a
+		17.15MB	sha256:022387ff318fa4807100c9a29391ed805521e379c096d6a50c25babb31b33656
+		259B	sha256:3ed712ae45281838f7104b88e2766f4418f50b7a465417e528f71b55523bc042
+		243B	sha256:9d7cc8aba8af884688c4a7cb6432915d9208f92d0b068da628484d674b0da6d4
+		1.004kB	sha256:48d8385919594bc1fd07def5b73759bc2b89a5a9c06e62a6aa3bdbedec76b653
+		213B	sha256:69fc56a2ba109a3fe3286efebc6d8afd7d058f9f13355bbf225accf90bd969e7
+		32B	sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1
+		0B	sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1
+		0B	sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1
+Image Created:	11 months ago
+Author:		<none>
+Arch:		amd64
+Command:	/bin/sh -c nginx -g "daemon off;"
+Working Dir:	<none>
+User:		1001
+Exposes Ports:	8080/tcp
+Docker Labels:	architecture=x86_64
+		authoritative-source-url=registry.access.redhat.com
+		build-date=2019-04-25T16:26:03.051400
+		com.redhat.build-host=cpt-0013.osbs.prod.upshift.rdu2.redhat.com
+		com.redhat.component=ubi8-container
+		com.redhat.license_terms=https://www.redhat.com/licenses/eulas
+		description=The Universal Base Image is designed and engineered to be the base layer for all of your containerized applications, middleware and utilities. This base image is freely redistributable, but Red Hat only supports Red Hat technologies through subscriptions for Red Hat products. This image is maintained by Red Hat and updated regularly.
+		distribution-scope=public
+		io.k8s.description=The Universal Base Image is designed and engineered to be the base layer for all of your containerized applications, middleware and utilities. This base image is freely redistributable, but Red Hat only supports Red Hat technologies through subscriptions for Red Hat products. This image is maintained by Red Hat and updated regularly.
+		io.k8s.display-name=Red Hat Universal Base Image 8
+		io.openshift.expose-services=
+		io.openshift.tags=base rhel8
+		maintainer=Red Hat, Inc.
+		name=ubi8
+		release=122
+		summary=Provides the latest release of Red Hat Universal Base Image 8.
+		url=https://access.redhat.com/containers/#/registry.access.redhat.com/ubi8/images/8.0-122
+		vcs-ref=d5ff1490fad8f1b57e451d384d3b331e94cf6fe4
+		vcs-type=git
+		vendor=Red Hat, Inc.
+		version=8.0
+Environment:	PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+		container=oci
+
+
+[student@workstation ~]$ oc get istag
+NAME                 IMAGE REF                                                                                                          UPDATED
+hello-world:latest   quay.io/redhattraining/hello-world-nginx@sha256:7f99ece5f39bf8d5d76a43cd9104a8d0a39f7135821b94bc1ebdc39cdc6dd63b   8 seconds ago
+[student@workstation ~]$ oc get is
+NAME          IMAGE REPOSITORY                                                                                        TAGS     UPDATED
+hello-world   default-route-openshift-image-registry.apps.ocp-ap3.prod.nextcle.com/prasanthaluru-common/hello-world   latest   14 seconds ago
+[student@workstation ~]$ oc describe is hello-world
+Name:			hello-world
+Namespace:		prasanthaluru-common
+Created:		44 seconds ago
+Labels:			<none>
+Annotations:		openshift.io/image.dockerRepositoryCheck=2020-06-10T07:27:44Z
+Image Repository:	default-route-openshift-image-registry.apps.ocp-ap3.prod.nextcle.com/prasanthaluru-common/hello-world
+Image Lookup:		local=false
+Unique Images:		1
+Tags:			1
+
+latest
+  tagged from quay.io/redhattraining/hello-world-nginx
+
+  * quay.io/redhattraining/hello-world-nginx@sha256:7f99ece5f39bf8d5d76a43cd9104a8d0a39f7135821b94bc1ebdc39cdc6dd63b
+      44 seconds ago
+[student@workstation ~]$ oc new-app --name hello -i prasanthaluru-common/hello-world
+--> Found image 44eaa13 (11 months old) in image stream "prasanthaluru-common/hello-world" under tag "latest" for "prasanthaluru-common/hello-world"
+
+    Red Hat Universal Base Image 8 
+    ------------------------------ 
+    The Universal Base Image is designed and engineered to be the base layer for all of your containerized applications, middleware and utilities. This base image is freely redistributable, but Red Hat only supports Red Hat technologies through subscriptions for Red Hat products. This image is maintained by Red Hat and updated regularly.
+
+    Tags: base rhel8
+
+    * This image will be deployed in deployment config "hello"
+    * Port 8080/tcp will be load balanced by service "hello"
+      * Other containers can access this service through the hostname "hello"
+
+--> Creating resources ...
+    imagestreamtag.image.openshift.io "hello:latest" created
+    deploymentconfig.apps.openshift.io "hello" created
+    service "hello" created
+--> Success
+    Application is not exposed. You can expose services to the outside world by executing one or more of the commands below:
+     'oc expose svc/hello' 
+    Run 'oc status' to view your app.
+[student@workstation ~]$ of get pod -w
+bash: of: command not found...
+[student@workstation ~]$ oc get pod -w
+NAME             READY   STATUS              RESTARTS   AGE
+hello-1-deploy   1/1     Running             0          20s
+hello-1-mxfqb    0/1     ContainerCreating   0          11s
+hello-1-mxfqb   1/1   Running   0     15s
+hello-1-deploy   0/1   Completed   0     25s
+hello-1-deploy   0/1   Completed   0     25s
+^C[student@workstation ~]$ oc get pods
+NAME             READY   STATUS      RESTARTS   AGE
+hello-1-deploy   0/1     Completed   0          44s
+hello-1-mxfqb    1/1     Running     0          35s
+[student@workstation ~]$ oc expose svc hello
+route.route.openshift.io/hello exposed
+[student@workstation ~]$ oc get route
+NAME    HOST/PORT                                                  PATH   SERVICES   PORT       TERMINATION   WILDCARD
+hello   hello-prasanthaluru-common.apps.ocp-ap3.prod.nextcle.com          hello      8080-tcp                 None
+[student@workstation ~]$ oc new-project prasanthaluru-image-stream
+Now using project "prasanthaluru-image-stream" on server "https://api.ocp-ap3.prod.nextcle.com:6443".
+
+You can add applications to this project with the 'new-app' command. For example, try:
+
+    oc new-app django-psql-example
+
+to build a new example application in Python. Or use kubectl to deploy a simple Kubernetes application:
+
+    kubectl create deployment hello-node --image=gcr.io/hello-minikube-zero-install/hello-node
+
+[student@workstation ~]$ oc projects
+You have access to the following projects and can switch between them with 'oc project <projectname>':
+
+    prasanthaluru-app-config
+    prasanthaluru-common
+  * prasanthaluru-image-stream
+
+Using project "prasanthaluru-image-stream" on server "https://api.ocp-ap3.prod.nextcle.com:6443".
+[student@workstation ~]$ oc new-app --name hello -i prasanthaluru-common/hello-world
+--> Found image 44eaa13 (11 months old) in image stream "prasanthaluru-common/hello-world" under tag "latest" for "prasanthaluru-common/hello-world"
+
+    Red Hat Universal Base Image 8 
+    ------------------------------ 
+    The Universal Base Image is designed and engineered to be the base layer for all of your containerized applications, middleware and utilities. This base image is freely redistributable, but Red Hat only supports Red Hat technologies through subscriptions for Red Hat products. This image is maintained by Red Hat and updated regularly.
+
+    Tags: base rhel8
+
+    * This image will be deployed in deployment config "hello"
+    * Port 8080/tcp will be load balanced by service "hello"
+      * Other containers can access this service through the hostname "hello"
+
+--> Creating resources ...
+    imagestreamtag.image.openshift.io "hello:latest" created
+    deploymentconfig.apps.openshift.io "hello" created
+    service "hello" created
+--> Success
+    Application is not exposed. You can expose services to the outside world by executing one or more of the commands below:
+     'oc expose svc/hello' 
+    Run 'oc status' to view your app.
+[student@workstation ~]$ oc get pod -w
+NAME             READY   STATUS              RESTARTS   AGE
+hello-1-deploy   1/1     Running             0          12s
+hello-1-sccrx    0/1     ContainerCreating   0          2s
+hello-1-sccrx   0/1   ContainerCreating   0     8s
+hello-1-sccrx   1/1   Running   0     26s
+hello-1-deploy   0/1   Completed   0     37s
+hello-1-deploy   0/1   Completed   0     37s
+
+^C[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ ^C
+[student@workstation ~]$ ls
+Desktop  DO288  DO288-apps  Documents  Downloads  Music  Pictures  Public  Templates  Videos
+[student@workstation ~]$ oc get pod
+NAME             READY   STATUS      RESTARTS   AGE
+hello-1-deploy   0/1     Completed   0          5m22s
+hello-1-sccrx    1/1     Running     0          5m12s
+[student@workstation ~]$ oc expose svc hello
+route.route.openshift.io/hello exposed
+[student@workstation ~]$ oc get route
+NAME    HOST/PORT                                                        PATH   SERVICES   PORT       TERMINATION   WILDCARD
+hello   hello-prasanthaluru-image-stream.apps.ocp-ap3.prod.nextcle.com          hello      8080-tcp                 None
+[student@workstation ~]$ oc delete project prasanthaluru-image-stream
+project.project.openshift.io "prasanthaluru-image-stream" deleted
+[student@workstation ~]$ oc delete projet prasan
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[student@workstation ~]$ -commo^C delete projet prasan
+[student@workstation ~]$ ^C
+[student@workstation ~]$ ls
+Desktop  DO288  DO288-apps  Documents  Downloads  Music  Pictures  Public  Templates  Videos
+[student@workstation ~]$ oc delete project prasanthaluru-common
+project.project.openshift.io "prasanthaluru-common" deleted
+[student@workstation ~]$ lab image-stream finish
+
+Completing GE: Creating an Image Stream
+
+ · Log in on OpenShift.........................................  SUCCESS
+
+Please use start if you wish to do the exercise again.
+
+[student@workstation ~]$ oc projects
+You have one project on this server: "prasanthaluru-app-config".
+[student@workstation ~]$ oc delete project prasanthaluru-app-config
+project.project.openshift.io "prasanthaluru-app-config" deleted
+[student@workstation ~]$ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

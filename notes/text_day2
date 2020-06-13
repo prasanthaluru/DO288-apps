@@ -1,0 +1,165 @@
+[student@workstation ~]$ ls ~/DO288/labs/external-registry/ubi-sleep/^C
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ source /usr/local/etc/ocp4.config
+[student@workstation ~]$ cat /usr/local/etc/ocp4.config
+RHT_OCP4_MASTER_API=https://api.ocp-ap3.prod.nextcle.com:6443/
+RHT_OCP4_WILDCARD_DOMAIN=apps.ocp-ap3.prod.nextcle.com
+RHT_OCP4_CLUSTER_ID=ed1e5e34-e692-4809-a5d0-8f172fdbf51c
+RHT_OCP4_NEXUS_SERVER=nexus-common.apps.ocp-ap3.prod.nextcle.com
+RHT_OCP4_DEV_USER=prasanthaluru
+RHT_OCP4_DEV_PASSWORD=fcb2c12a0721428ea8ca
+RHT_OCP4_GITHUB_USER=prasanthaluru
+RHT_OCP4_QUAY_USER=paluru
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ oc get sa
+Error from server (Forbidden): serviceaccounts is forbidden: User "prasanthaluru" cannot list resource "serviceaccounts" in API group "" in the namespace "prasanthaluru-app-config"
+[student@workstation ~]$ oc projects
+You are not a member of any projects. You can request a project to be created with the 'new-project' command.
+[student@workstation ~]$ oc new-project prasanthaluru-app-config
+Already on project "prasanthaluru-app-config" on server "https://api.ocp-ap3.prod.nextcle.com:6443".
+
+You can add applications to this project with the 'new-app' command. For example, try:
+
+    oc new-app django-psql-example
+
+to build a new example application in Python. Or use kubectl to deploy a simple Kubernetes application:
+
+    kubectl create deployment hello-node --image=gcr.io/hello-minikube-zero-install/hello-node
+
+[student@workstation ~]$ 
+[student@workstation ~]$ oc get sa
+NAME       SECRETS   AGE
+builder    2         22s
+default    2         22s
+deployer   2         22s
+[student@workstation ~]$ oc get describe sa
+error: the server doesn't have a resource type "describe"
+[student@workstation ~]$ oc get describe default
+error: the server doesn't have a resource type "describe"
+[student@workstation ~]$ oc  describe sa/default
+
+
+
+
+
+
+Name:                default
+Namespace:           prasanthaluru-app-config
+Labels:              <none>
+Annotations:         <none>
+Image pull secrets:  default-dockercfg-f45rx
+Mountable secrets:   default-token-k8zkc
+                     default-dockercfg-f45rx
+Tokens:              default-token-6msm7
+                     default-token-k8zkc
+Events:              <none>
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ lab expose-registry start
+
+Checking prerequisites for GE: Using the OpenShift Registry
+
+ Verifying the OpenShift cluster is running:
+ · Log in on OpenShift.........................................  SUCCESS
+ · Check master node ip-10-0-131-20.ap-southeast-1.compute.inte
+   rnal is ready...............................................  SUCCESS
+ · Check master node ip-10-0-145-254.ap-southeast-1.compute.int
+   ernal is ready..............................................  SUCCESS
+ · Check master node ip-10-0-166-211.ap-southeast-1.compute.int
+   ernal is ready..............................................  SUCCESS
+ · Check the internal registry is up and running...............  SUCCESS
+ Checking required artifacts:
+ · OCI container image 'ubi-info' is available.................  SUCCESS
+ Checking for conflicts with existing OpenShift projects:
+ · Project 'prasanthaluru-common' is absent....................  SUCCESS
+ Checking for conflicts with existing local containers:
+ · Container 'info' is absent..................................  SUCCESS
+
+Setting up the classroom for GE: Using the OpenShift Registry
+
+ · Download exercise files.....................................  SUCCESS
+ · Download solution files.....................................  SUCCESS
+ · Download OCI container image folder 'ubi-info'..............  SUCCESS
+
+Overall start status...........................................  SUCCESS
+
+[student@workstation ~]$ source /usr/local/etc/ocp4.config
+[student@workstation ~]$ oc whoami
+prasanthaluru
+[student@workstation ~]$ oc get route -n openshift-image-registry
+NAME            HOST/PORT                                                              PATH   SERVICES         PORT    TERMINATION   WILDCARD
+default-route   default-route-openshift-image-registry.apps.ocp-ap3.prod.nextcle.com          image-registry   <all>   reencrypt     None
+[student@workstation ~]$ INTERNAL_REGISTRY=$( oc get route default-route -n openshift-image-registry -o jsonpath='{.spec.host}' )
+[student@workstation ~]$ echo $INTERNAL_REGISTRY
+default-route-openshift-image-registry.apps.ocp-ap3.prod.nextcle.com
+[student@workstation ~]$ oc new-project prasanthaluru-common
+Now using project "prasanthaluru-common" on server "https://api.ocp-ap3.prod.nextcle.com:6443".
+
+You can add applications to this project with the 'new-app' command. For example, try:
+
+    oc new-app django-psql-example
+
+to build a new example application in Python. Or use kubectl to deploy a simple Kubernetes application:
+
+    kubectl create deployment hello-node --image=gcr.io/hello-minikube-zero-install/hello-node
+
+[student@workstation ~]$ TOKEN=$(oc whoami -t)
+[student@workstation ~]$ ls ~/DO288/labs/ex
+expose-registry/   external-registry/ 
+[student@workstation ~]$ ls ~/DO288/labs/ex
+expose-registry/   external-registry/ 
+[student@workstation ~]$ ls ~/DO288/labs/ex
+expose-registry/   external-registry/ 
+[student@workstation ~]$ ls ~/DO288/labs/expose-registry/ubi-info/
+blobs  index.json  oci-layout
+[student@workstation ~]$ #skopeo copy --dest-creds=prasanth.aluru:$TOKEN oci/home/student/
+[student@workstation ~]$ 
+[student@workstation ~]$ pwd
+/home/student
+[student@workstation ~]$ skopeo copy --dest-creds=prasanth.aluru:$TOKEN oci/home/student/DO288/labs/expose-registry/ubi-info docker://$INTERNAL_REGISTRY/prasanthaluru-common/ubi-info:1.0
+FATA[0000] Invalid source name oci/home/student/DO288/labs/expose-registry/ubi-info: Invalid image name "oci/home/student/DO288/labs/expose-registry/ubi-info", expected colon-separated transport:reference 
+[student@workstation ~]$ skopeo copy --dest-creds=prasanth.aluru:$TOKEN oci:/home/student/DO288/labs/expose-registry/ubi-info docker://$INTERNAL_REGISTRY/prasanthaluru-common/ubi-info:1.0
+Getting image source signatures
+Copying blob sha256:787f47dbeaac926cc8c927a48e8a84fc97e05fbd1c08a4c9c4ddcaddfd87e2f7
+ 67.66 MB / 67.66 MB [======================================================] 5s
+Copying blob sha256:6a5240d60dc4e1ade0d103badb2a897e8103ebf0ebe08350cd582bbc9671cc7a
+ 1.45 KB / 1.45 KB [========================================================] 2s
+Copying blob sha256:6286544f607cd74ef046d8f492f4a61f081992cececfebe0e43ab1b1531c2b28
+ 259 B / 259 B [============================================================] 2s
+Copying blob sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1
+ 32 B / 32 B [==============================================================] 2s
+Copying config sha256:35de0dda82a8572fe506aa54634f209464df5c05b5d9b955557db10bd86a4fc5
+ 2.33 KB / 2.33 KB [========================================================] 2s
+Writing manifest to image destination
+Copying config sha256:35de0dda82a8572fe506aa54634f209464df5c05b5d9b955557db10bd86a4fc5
+ 0 B / 2.33 KB [------------------------------------------------------------] 1s
+Writing manifest to image destination
+Storing signatures
+[student@workstation ~]$ oc get is
+NAME       IMAGE REPOSITORY                                                                                     TAGS   UPDATED
+ubi-info   default-route-openshift-image-registry.apps.ocp-ap3.prod.nextcle.com/prasanthaluru-common/ubi-info   1.0    8 seconds ago
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ sudo podman login -u prasanthaluru -p $TOKEN $INTERNAL_REGISTRY
+Login Succeeded!
+[student@workstation ~]$ sudo podman pull $INTERNAL_REGISTRY/prasanthaluru-common/ubi-info:1.0
+Trying to pull default-route-openshift-image-registry.apps.ocp-ap3.prod.nextcle.com/prasanthaluru-common/ubi-info:1.0...Getting image source signatures
+Skipping fetch of repeat blob sha256:787f47dbeaac926cc8c927a48e8a84fc97e05fbd1c08a4c9c4ddcaddfd87e2f7
+Skipping fetch of repeat blob sha256:6a5240d60dc4e1ade0d103badb2a897e8103ebf0ebe08350cd582bbc9671cc7a
+Copying blob sha256:6286544f607cd74ef046d8f492f4a61f081992cececfebe0e43ab1b1531c2b28
+ 259 B / 259 B [============================================================] 0s
+Skipping fetch of repeat blob sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1
+Copying config sha256:35de0dda82a8572fe506aa54634f209464df5c05b5d9b955557db10bd86a4fc5
+ 2.33 KB / 2.33 KB [========================================================] 0s
+Writing manifest to image destination
+Storing signatures
+35de0dda82a8572fe506aa54634f209464df5c05b5d9b955557db10bd86a4fc5
+[student@workstation ~]$ 
+
